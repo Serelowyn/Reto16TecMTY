@@ -22,9 +22,16 @@ empleados.columns
 """esto me sirve para ver la cantidad de celdas con faltantes, en caso de que se requiera despues"""
 empleados.isna().sum()
 
-empleados.head()
+empleados.sample(10)
 
-# ----------------------- 
+# ----------------------- 3. Transforma los datos según las características de las variables:
+
+"""para el caso de (employee_id), se sabe que es un elemento primario, que sirve de identificador y es unico por empleado lo cual no nos sirve para los grupos. los elimino"""
+
+empleados = empleados.drop(columns=["employee_id"])
+empleados.sample(10)
+
+
 # ----------------------- 
 # ----------------------- 
 # ----------------------- 
