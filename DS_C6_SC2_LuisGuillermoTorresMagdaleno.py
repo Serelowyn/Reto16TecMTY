@@ -2,6 +2,7 @@
 
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+import numpy as np
 
 # ----------------------- Fin de las importaciones
 
@@ -44,7 +45,7 @@ empleados = empleados.fillna(empleados.mean(numeric_only=True))
 #verificacion de que ya no hay NaN
 empleados.isna().sum()
 
-# ----------------------- 3.a Transforma los datos según las características de las variables:
+# ----------------------- 3.a Puede usar diferentes métodos de transformación, como OrdinalEncoder, OneHotEncoder, StandardEncoder, NormalizerEncoder, etc.
 
 """aca se realiza una separacion, de todas las columnas que son numericas o categoricas"""
 
@@ -76,8 +77,11 @@ x_df = pd.concat([empleados_numericas, empleados_categoricas], axis=1)
 x = x_df.to_numpy()
 x.shape
 
-# -----------------------
-# -----------------------
+# ----------------------- 4. Selecciona el número de grupos adecuados para agrupar usando K-means:
+# ----------------------- 4.a Ejecuta el algoritmo K-means con distintos números de grupos y almacena los resultados.
+
+
+
 # -----------------------
 # -----------------------
 # -----------------------
