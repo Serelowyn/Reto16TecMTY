@@ -31,6 +31,17 @@ empleados.sample(10)
 empleados = empleados.drop(columns=["employee_id"])
 empleados.sample(10)
 
+"""las siguientes columnas fueron las encontradas con NaN's"""
+# age
+# time_of_service
+# work_life_balance
+# var2
+# var4
+"""para estas columnas opto por usar el por usar el promedio general de cada columna para rellenar los espacios faltantes para no borrar las filas y no perder informacion o poner ceros deliberadamente, lo cual tiene un efecto de sesgo. es util por los tipos de datos numericos que hay en las demas filas."""
+
+empleados = empleados.fillna(empleados.mean(numeric_only=True))
+#verificacion de que ya no hay NaN
+empleados.isna().sum()
 
 # ----------------------- 
 # ----------------------- 
