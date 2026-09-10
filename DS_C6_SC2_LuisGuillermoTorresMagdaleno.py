@@ -70,6 +70,11 @@ empleados_numericas = pd.DataFrame(
     numericas_escaladas, columns=columnas_numericas, index=empleados.index
 )
 
+"""agrupo las variables escaladas y las codigicadas"""
+
+x_df = pd.concat([empleados_numericas, empleados_categoricas], axis=1)
+x = x_df.to_numpy()
+x.shape
 
 # -----------------------
 # -----------------------
