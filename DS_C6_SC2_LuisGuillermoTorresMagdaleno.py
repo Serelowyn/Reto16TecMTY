@@ -7,6 +7,9 @@ from sklearn import metrics
 from sklearn.cluster import KMeans
 from matplotlib import pyplot as plt
 from matplotlib import cm as cm
+from sklearn.decomposition import PCA
+import plotly.graph_objects as go
+
 # ----------------------- Fin de las importaciones
 
 # ----------------------- 2. Carga los datos del archivo.
@@ -178,7 +181,47 @@ for numero_grupo in range(k):
 
 resumen
 
-# -----------------------
+# ----------------------- 6. interpretacion de los resultados obtenidos. a. Genera diferentes visualizaciones que ayuden a mostrar las características que tienen en común los empleados dentro de cada grupo.
+
+"""barras agrupadas: promedio normalizado por variable numerica"""
+
+resumen_num = resumen[resumen["variable"].isin(columnas_numericas)].set_index("variable")
+"""para voltear filas y columnas"""
+resumen_num_t = resumen_num.transpose()
+resumen_num_norm = (resumen_num_t - resumen_num_t.min()) / (resumen_num_t.max() - resumen_num_t.min())
+
+fig_barras = go.Figure()
+for numero_grupo in range(k):
+    fig_barras.add_trace(
+        go.Bar(
+            y=resumen_num_norm.loc["grupo " + str(numero_grupo)],
+            x=resumen_num_norm.columns,
+            name="grupo " + str(numero_grupo),
+        )
+    )
+
+fig_barras.update_layout(title="promedio normalizado por variable y grupo", yaxis_title="valor normalizado")
+fig_barras.show()
+
+"""cajas y bigotes de attrition_rate por grupo, la variable clave que pide el reto"""
+
+fig_cajas = go.Figure()
+for numero_grupo in range(k):
+    fig_cajas.add_trace(go.Box(y=grupos[numero_grupo]["attrition_rate"], name="grupo " + str(numero_grupo)))
+fig_cajas.update_layout(title="attrition_rate por grupo", yaxis_title="attrition_rate", boxmode="group")
+fig_cajas.show()
+
+"""visualizacion con pca, se agrupo con las 47 variables (numericas + categoricas codificadas), pca solo se usa para poder ver los 4 grupos en dos dimensiones"""
+
+pca = PCA(n_components=2)
+x_pca = pca.fit_transform(x)
+
+plt.scatter(x_pca[:, 0], x_pca[:, 1], c=etiquetas, cmap=plt.cm.Spectral)
+plt.title("grupos visualizados con pca")
+plt.xlabel("componente 1")
+plt.ylabel("componente 2")
+plt.show()
+
 # -----------------------
 # -----------------------
 # -----------------------
