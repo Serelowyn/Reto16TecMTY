@@ -5,7 +5,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 import numpy as np
 from sklearn import metrics
 from sklearn.cluster import KMeans
-
+from matplotlib import pyplot as plt
+from matplotlib import cm as cm
 # ----------------------- Fin de las importaciones
 
 # ----------------------- 2. Carga los datos del archivo.
@@ -97,7 +98,62 @@ print(resultados_silhouette)
 print(resultados_calinski)
 
 
-# -----------------------
+# ----------------------- 4.b Utiliza una estrategia para determinar el número adecuado de grupos como K-Elbow o Silhouette-Plot.
+
+fig, (ax0, ax1) = plt.subplots(ncols=2, figsize=(12, 4))
+
+ax0.plot(list(resultados_silhouette.keys()), list(resultados_silhouette.values()), "o-")
+ax0.grid(True)
+ax0.set_title("silhouette")
+ax0.set_xlabel("num clusters")
+ax0.set_ylabel("silhouette score")
+
+ax1.plot(list(resultados_calinski.keys()), list(resultados_calinski.values()), "o-")
+ax1.grid(True)
+ax1.set_title("calinski-harabasz")
+ax1.set_xlabel("num clusters")
+ax1.set_ylabel("calinski-harabasz score")
+
+plt.show()
+
+"""los dos indices bajan todo en funcion de k, si solo se leyera el numero mas alto siempre saldria (k=2). se rompe el decremento del silhouette en (k=5)"""
+
+for k in [2, 3, 4]:
+    fig, (ax0, ax1) = plt.subplots(1, 2)
+    fig.set_size_inches(12, 5)
+
+    """para dejar espacio en blanco separado de una grafica"""
+    ax0.set_ylim([0, len(x) + (k + 1) * 10])
+
+    y_pred = KMeans(n_clusters=k).fit_predict(x)
+    valores_silhouette = metrics.silhouette_samples(x, y_pred)
+
+    y_lower = 10
+    for i in range(k):
+        valores_i = valores_silhouette[y_pred == i]
+        valores_i.sort()
+        tam_i = valores_i.shape[0]
+        y_upper = y_lower + tam_i
+        color = cm.nipy_spectral(float(i) / k)
+        ax0.fill_betweenx(np.arange(y_lower, y_upper), 0, valores_i, facecolor=color, edgecolor=color)
+        ax0.text(-0.05, y_lower + 0.5 * tam_i, str(i))
+        y_lower = y_upper + 10
+
+    ax0.set_title("silhouette plot, k=" + str(k))
+    ax0.set_xlabel("coeficiente de silhouette")
+    ax0.set_ylabel("grupo")
+    ax0.axvline(x=resultados_silhouette[k], color="red", linestyle="--")
+
+    ax1.scatter(x[:, 0], x[:, 1], c=y_pred, cmap=plt.cm.Spectral)
+    ax1.set_title("grupos, k=" + str(k))
+
+    plt.show()
+
+"""se elige k=4: con k=4 aparece un grupo compacto de 614 empleados con attrition_rate promedio de 0.69, contra ~0.14 en los otros tres. probar con k=5 no cambia nada!: ese mismo grupo de alto riesgo sigue apareciendo casi igual (588 empleados, 0.69 de promedio), no aporta nada nuevo, asi que k=4 es mas simple"""
+k = 4
+etiquetas = KMeans(n_clusters=k).fit_predict(x)
+metrics.silhouette_score(x, etiquetas)
+
 # -----------------------
 # -----------------------
 # -----------------------
