@@ -222,25 +222,26 @@ plt.xlabel("componente 1")
 plt.ylabel("componente 2")
 plt.show()
 
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
-# -----------------------
+# ----------------------- 6. b Redacta una historia con las conclusiones más importantes del análisis de manera que ayude a la toma de decisiones.
+
+""" tengo estos dataframes por cada grupo con su tamaño:
+
+resumen[resumen["variable"] == "attrition_rate"]
+
+tamanos de los grupos:
+1. grupo 0 = 1955,
+2. grupo 1 = 2280,
+3. grupo 2 = 614,
+4. grupo 3 = 2151.
+
+el hallazgo principal es el grupo 2: son 614 empleados que representa un 8.8% de la poblacion total con attrition_rate promedio de 0.69 que es bastante mas que el resto de los grupos. este grupo no se distingue por departamento, genero, estado civil, ciudad de origen ni tipo de compensacion asi que el riesgo de desercion no esta concentrado en un area de la empresa en particular
+
+los otros tres grupos, con attrition_rate bajo y parecido entre ellos se diferencian en su plan de carrera y recorrido
+
+- grupo 1: empleados mas nuevos con edad promedio 30, mas o menos unos 6 anios de antiguedad, poco tiempo desde su ultima promocion;
+- grupo 3: empleados veteranos con edad promedio 55, mas o menos 26 anios de antiguedad;
+- grupo 0: empleados de antiguedad media con mas o menos unos 9 anios pero con el tiempo mas largo desde su ultima promocion con 3.5 anios;
+
+el estancamiento en la promocion no puede explicar la desercion en estos datos aunque esten mas tiempo sin ascender de su puesto
+
+lo que rrhh deberia de hacer en primer lugar es buscar el riesgo en otro lado, e identificar alguna otra fuente para poder comprender el perfil del grupo 2 que es el que mas attrition_rate tiene. quizas el problema no viene con si ascenden o no, quiazs es algo mas con las variables que le siguen, en este caso yo considero que (work life balance) es la que podria analizarse aun mas."""
