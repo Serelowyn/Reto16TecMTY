@@ -3,6 +3,8 @@
 import pandas as pd
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 import numpy as np
+from sklearn import metrics
+from sklearn.cluster import KMeans
 
 # ----------------------- Fin de las importaciones
 
@@ -80,6 +82,19 @@ x.shape
 # ----------------------- 4. Selecciona el número de grupos adecuados para agrupar usando K-means:
 # ----------------------- 4.a Ejecuta el algoritmo K-means con distintos números de grupos y almacena los resultados.
 
+np.random.seed(0)
+
+#diccionarios vacios para tener donde se guardara el agrupamiento
+resultados_silhouette = {}
+resultados_calinski = {}
+
+for k in range(2, 11):
+    y_pred = KMeans(n_clusters=k).fit_predict(x)
+    resultados_silhouette[k] = metrics.silhouette_score(x, y_pred)
+    resultados_calinski[k] = metrics.calinski_harabasz_score(x, y_pred)
+
+print(resultados_silhouette)
+print(resultados_calinski)
 
 
 # -----------------------
