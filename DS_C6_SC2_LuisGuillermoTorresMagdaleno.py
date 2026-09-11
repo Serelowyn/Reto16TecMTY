@@ -90,7 +90,7 @@ resultados_silhouette = {}
 resultados_calinski = {}
 
 for k in range(2, 11):
-    y_pred = KMeans(n_clusters=k).fit_predict(x)
+    y_pred = KMeans(n_clusters=k, n_init=10).fit_predict(x)
     resultados_silhouette[k] = metrics.silhouette_score(x, y_pred)
     resultados_calinski[k] = metrics.calinski_harabasz_score(x, y_pred)
 
@@ -116,7 +116,7 @@ ax1.set_ylabel("calinski-harabasz score")
 
 plt.show()
 
-"""los dos indices bajan todo en funcion de k, si solo se leyera el numero mas alto siempre saldria (k=2). se rompe el decremento del silhouette en (k=5)"""
+"""los dos indices bajan casi todo el tiempo conforme aumenta k, es el sesgo as pocos grupos... ; si solo se leyera el numero mas alto, siempre saldria k=2 o k=3 ya que da 0.0692 y 0.0697. de ahi en adelante baja hasta k=10, hace falta revisar las graficas silhouette-plot"""
 
 for k in [2, 3, 4]:
     fig, (ax0, ax1) = plt.subplots(1, 2)
@@ -125,7 +125,7 @@ for k in [2, 3, 4]:
     """para dejar espacio en blanco separado de una grafica"""
     ax0.set_ylim([0, len(x) + (k + 1) * 10])
 
-    y_pred = KMeans(n_clusters=k).fit_predict(x)
+    y_pred = KMeans(n_clusters=k, n_init=10).fit_predict(x)
     valores_silhouette = metrics.silhouette_samples(x, y_pred)
 
     y_lower = 10
@@ -151,7 +151,7 @@ for k in [2, 3, 4]:
 
 """se elige k=4: con k=4 aparece un grupo compacto de 614 empleados con attrition_rate promedio de 0.69, contra ~0.14 en los otros tres. probar con k=5 no cambia nada!: ese mismo grupo de alto riesgo sigue apareciendo casi igual (588 empleados, 0.69 de promedio), no aporta nada nuevo, asi que k=4 es mas simple"""
 k = 4
-etiquetas = KMeans(n_clusters=k).fit_predict(x)
+etiquetas = KMeans(n_clusters=k, n_init=10).fit_predict(x)
 metrics.silhouette_score(x, etiquetas)
 
 # -----------------------
