@@ -154,7 +154,30 @@ k = 4
 etiquetas = KMeans(n_clusters=k, n_init=10).fit_predict(x)
 metrics.silhouette_score(x, etiquetas)
 
-# -----------------------
+# ----------------------- # 5. Segmenta el DataFrame original creando nuevos DataFrames con los empleados separados por grupo: Crea una nueva tabla resumen con los estadísticos adecuados que describa el comportamiento de las variables por grupo.
+
+empleados["grupo"] = etiquetas
+"""para separar por grupo1,2,3,4"""
+grupos = [empleados[empleados["grupo"] == numero_grupo] for numero_grupo in range(k)]
+
+for numero_grupo in range(k):
+    print("grupo", numero_grupo, ":", len(grupos[numero_grupo]), "empleados")
+
+"""resumen estadistico por grupo: numericas se usa el promedio, para aquellas categoricas se usa la moda"""
+resumen = pd.DataFrame()
+resumen["variable"] = empleados.columns[:-1]
+
+for numero_grupo in range(k):
+    fila = []
+    for col in resumen["variable"]:
+        if col in columnas_numericas:
+            fila.append(np.round(grupos[numero_grupo][col].mean(), 2))
+        else:
+            fila.append(grupos[numero_grupo][col].mode()[0])
+    resumen["grupo " + str(numero_grupo)] = fila
+
+resumen
+
 # -----------------------
 # -----------------------
 # -----------------------
